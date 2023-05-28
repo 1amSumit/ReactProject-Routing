@@ -1,5 +1,5 @@
 import React from "react";
-import { useRouteLoaderData, json } from "react-router-dom";
+import { useRouteLoaderData, json, redirect } from "react-router-dom";
 import EventItem from "../components/EventItem";
 
 const EventDetailPage = () => {
@@ -19,4 +19,15 @@ export const loader = async ({ request, params }) => {
   } else {
     return response;
   }
+};
+
+export const action = async ({ params, request }) => {
+  const response = await fetch(`http://localhost:8080/events/${params.id}`, {
+    method: request.method,
+  });
+  if (!response.ok) {
+    return json({ message: "something went wrong!" }, { status: 500 });
+  }
+
+  return redirect("/events");
 };
