@@ -25,6 +25,10 @@ export const action = async ({ params, request }) => {
   const response = await fetch(`http://localhost:8080/events/${params.id}`, {
     method: request.method,
   });
+
+  if (response.status === 422) {
+    return response;
+  }
   if (!response.ok) {
     return json({ message: "something went wrong!" }, { status: 500 });
   }
